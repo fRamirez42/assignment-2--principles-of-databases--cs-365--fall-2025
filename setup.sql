@@ -1,0 +1,10 @@
+DROP DATABASE IF EXISTS passwords;
+CREATE DATABASE passwords DEFAULT CHARACTER SET utf8mb4;
+USE passwords;
+
+CREATE TABLE IF NOT EXISTS sites (
+  site_ID  SMALLINT(7)   NOT NULL,
+  url      VARCHAR(512) NOT NULL,
+
+  PRIMARY KEY (site_ID)
+);
