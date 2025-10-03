@@ -3,15 +3,15 @@ CREATE DATABASE passwords DEFAULT CHARACTER SET utf8mb4;
 USE passwords;
 
 CREATE TABLE IF NOT EXISTS sites (
-  site_ID     SMALLINT(7)   NOT NULL,
+  site_ID     INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   url         VARCHAR(512)  NOT NULL,
 
   PRIMARY KEY (site_ID)
 );
 
 CREATE TABLE IF NOT EXISTS accounts {
-  site_ID     SMALLINT(7)   NOT NULL,
-  account_ID  SMALLINT(9)   NOT NULL,
+  site_ID     INT UNSIGNED  NOT NULL,
+  account_ID  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   email       VARCHAR(256)  NOT NULL,
   username    VARCHAR(256)  NOT NULL,
 
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS accounts {
 };
 
 CREATE TABLE IF NOT EXISTS _passwords {
-  pass_ID           SMALLINT(5)   NOT NULL,
-  account_ID        SMALLINT(9)   NOT NULL,
+  pass_ID           INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  account_ID        INT UNSIGNED  NOT NULL,
   password          VARCHAR(256)  NOT NULL,
   time_of_creation  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP;
   comment           VARCHAR(256)  NULL,
