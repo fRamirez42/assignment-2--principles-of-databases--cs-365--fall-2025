@@ -26,4 +26,4 @@ CREATE TABLE IF NOT EXISTS _passwords {
   comment           VARCHAR(256)  NULL,
   is_current        SMALLINT(1)   NOT NULL,
 
-}
+};
