@@ -9,21 +9,22 @@ CREATE TABLE IF NOT EXISTS sites (
   PRIMARY KEY (site_ID)
 );
 
-CREATE TABLE IF NOT EXISTS accounts {
+CREATE TABLE IF NOT EXISTS accounts (
   site_ID     INT UNSIGNED  NOT NULL,
   account_ID  INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   email       VARCHAR(256)  NOT NULL,
   username    VARCHAR(256)  NOT NULL,
 
   PRIMARY KEY(account_ID)
-};
+);
 
-CREATE TABLE IF NOT EXISTS _passwords {
+CREATE TABLE IF NOT EXISTS _passwords (
   pass_ID           INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   account_ID        INT UNSIGNED  NOT NULL,
   password          VARCHAR(256)  NOT NULL,
-  time_of_creation  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP;
+  time_of_creation  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   comment           VARCHAR(256)  NULL,
   is_current        SMALLINT(1)   NOT NULL,
 
-};
+  PRIMARY KEY(pass_ID)
+);
