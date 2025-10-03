@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS sites (
   url         VARCHAR(512)  NOT NULL,
 
   PRIMARY KEY (site_ID)
-  UNIQUE KEY uq_site_url (url)
+  UNIQUE KEY unique_site_url (url)
 );
 
 CREATE TABLE IF NOT EXISTS accounts (
