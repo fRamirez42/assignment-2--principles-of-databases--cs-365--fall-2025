@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS sites (
   site_ID     INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   url         VARCHAR(512)  NOT NULL,
 
-  PRIMARY KEY (site_ID)
+  PRIMARY KEY (site_ID),
   UNIQUE KEY unique_site_url (url)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   PRIMARY KEY(account_ID)
 );
 
-CREATE TABLE IF NOT EXISTS _passwords (
+CREATE TABLE IF NOT EXISTS passwords (
   pass_ID           INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   account_ID        INT UNSIGNED  NOT NULL,
   password          VARCHAR(256)  NOT NULL,
