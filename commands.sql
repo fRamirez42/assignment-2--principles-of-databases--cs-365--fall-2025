@@ -73,3 +73,71 @@ SELECT
   is_current
 FROM passwords_data
 WHERE pass_ID = 3;
+
+-- Command 6: delete tuple based on URL --
+DELETE p
+FROM passwords_data p
+JOIN accounts a ON p.account_ID = a.account_ID
+JOIN sites s ON a.site_ID = s.site_ID
+WHERE s.url = 'http://steam.com';
+
+-- To Verify --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+
+SELECT 
+  s.url,
+  a.email,
+  a.username,
+  p.pass_ID,
+  CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) AS decrypted_password,
+  p.time_of_creation,
+  p.comment,
+  p.is_current
+FROM passwords_data p
+JOIN accounts a ON p.account_ID = a.account_ID
+JOIN sites s ON a.site_ID = s.site_ID
+ORDER BY p.pass_ID;
+
+-- Command 7: delete tuple based on a password --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+
+-- find the account_ID and site_ID tied to that password --
+SELECT a.account_ID, s.site_ID
+INTO @acc_id, @site_id
+FROM passwords_data p
+JOIN accounts a ON p.account_ID = a.account_ID
+JOIN sites s ON a.site_ID = s.site_ID
+WHERE CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) = 'SchoolAppropriate78@'
+LIMIT 1;
+
+-- delete the password row --
+DELETE FROM passwords_data
+WHERE account_ID = @acc_id;
+
+-- delete the account row --
+DELETE FROM accounts
+WHERE account_ID = @acc_id;
+
+-- delete the site row (only if no other accounts use it) --
+DELETE FROM sites
+WHERE site_ID = @site_id
+  AND site_ID NOT IN (SELECT site_ID FROM accounts);
+
+-- To verify --
+SELECT 
+  s.url,
+  a.email,
+  a.username,
+  p.pass_ID,
+  CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) AS decrypted_password,
+  p.time_of_creation,
+  p.comment,
+  p.is_current
+FROM passwords_data p
+JOIN accounts a ON p.account_ID = a.account_ID
+JOIN sites s ON a.site_ID = s.site_ID
+ORDER BY p.pass_ID;

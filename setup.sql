@@ -47,7 +47,7 @@ INSERT INTO accounts (site_ID, email, username) VALUES
   (1, "feliperam1990@gmail.com", "feliperam"),
   (2, "feliperam1990@gmail.com", "feliper44"),
   (3, "felipeprofessional@gmail.com", "felipe24"),
-  (4, "pipesuper24@gmail.com", "NextBigThing99+")
+  (4, "pipesuper24@gmail.com", "NextBigThing99+"),
   (5, "feliperam1990@gmail.com", "WeBall1234"),
   (5, "theshowman@gmail.com", "TheShowManIsHere!"),
   (6, "jdoe@hartford.edu", "jdoe");
@@ -63,8 +63,8 @@ INSERT INTO passwords_data
   (4, AES_ENCRYPT('FelipeRamirez9900*', @key_str, @init_vector), '2018-09-30', NULL, 1),
   (5, AES_ENCRYPT('DaBoss67', @key_str, @init_vector), '2014-11-08', 'Forgot it', 0),
   (5, AES_ENCRYPT('RemeberThisTime11#', @key_str, @init_vector), '2017-12-20', 'Forgot it again', 0),
-  (5, AES_ENCRYPT('DogGolden420@', @key_str, @init_vector), '2020-03-15', NULL, 1),
-  (6, AES_ENCRYPT('ShowmanshipIsKey12', @key_str, @init_vector), '2014-11-08', 'It is!', 0),
-  (6, AES_ENCRYPT('Dexter8877%', @key_str, @init_vector), '2023-08-20', NULL, 1);
-  (7, AES_ENCRYPT('IAmHere@', @key_str, @init_vector), '2022-08-20', NULL, 1);
+  (5, AES_ENCRYPT('DogGolden420@', @key_str, @init_vector), '2020-03-15', NULL, 0),
+  (6, AES_ENCRYPT('ShowmanshipIsKey12', @key_str, @init_vector), '2014-11-08', 'It is!', 1),
+  (6, AES_ENCRYPT('Dexter8877%', @key_str, @init_vector), '2023-08-20', NULL, 1),
+  (7, AES_ENCRYPT('IAmHere@', @key_str, @init_vector), '2022-08-20', NULL, 1),
   (8, AES_ENCRYPT('SchoolAppropriate78@', @key_str, @init_vector), '2020-12-31', NULL, 1);
