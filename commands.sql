@@ -45,3 +45,31 @@ JOIN accounts a ON a.site_ID = s.site_ID
 JOIN passwords_data p ON p.account_ID = a.account_ID
 WHERE s.url LIKE 'https%'
 LIMIT 2;
+
+-- Command 4: Change the URL associated with one of the passwords --
+UPDATE sites
+SET url = 'https://snapchat.com'
+WHERE site_ID = 5;
+-- To verify --
+SELECT * FROM sites;
+
+-- Command 5: Change the password to any entry --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+
+UPDATE passwords_data
+SET 
+  password = AES_ENCRYPT('MyNewSecureSnapPass2025!', @key_str, @init_vector),
+  time_of_creation = '2025-10-08'
+WHERE pass_ID = 3;
+-- To verify --
+SELECT 
+  pass_ID,
+  account_ID,
+  CONVERT(AES_DECRYPT(password, @key_str, @init_vector) USING utf8) AS decrypted_password,
+  time_of_creation,
+  comment,
+  is_current
+FROM passwords_data
+WHERE pass_ID = 3;
