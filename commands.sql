@@ -14,3 +14,34 @@ VALUES (
   'Created new account entry for Snapchat site',
   1
 );
+
+-- Command 2: Get the password associated with a URL --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+
+SELECT s.url, a.email, a.username,
+       CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) AS plaintext_password
+FROM sites s
+JOIN accounts a ON a.site_ID = s.site_ID
+JOIN passwords_data p ON p.account_ID = a.account_ID
+WHERE s.url = 'https://github.com';
+
+-- Command 3: Get all password associated data for two entries that hold HTTPS in their URL --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+
+SELECT 
+  s.url,
+  a.email,
+  a.username,
+  CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) AS decrypted_password,
+  p.time_of_creation,
+  p.comment,
+  p.is_current
+FROM sites s
+JOIN accounts a ON a.site_ID = s.site_ID
+JOIN passwords_data p ON p.account_ID = a.account_ID
+WHERE s.url LIKE 'https%'
+LIMIT 2;

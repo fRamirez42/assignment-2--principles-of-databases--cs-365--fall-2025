@@ -4,7 +4,7 @@ USE passwords;
 
 SET block_encryption_mode = 'aes-256-cbc';
 SET @key_str = UNHEX(SHA2('the dog in the field', 512));
-SET @init_vector = RANDOM_BYTES(16);
+SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
 
 CREATE TABLE IF NOT EXISTS sites (
   site_ID     INT UNSIGNED  NOT NULL AUTO_INCREMENT,
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS passwords_data (
 
 INSERT INTO sites VALUES
     (1, "https://mail.google.com"),
-    (2, "https://facebook.com"),
+    (2, "http://facebook.com"),
     (3, "https://github.com"),
     (4, "https://youtube.com"),
-    (5, "https://steam.com"),
+    (5, "http://steam.com"),
     (6, "https://hartford.edu");
 
 INSERT INTO accounts (site_ID, email, username) VALUES
