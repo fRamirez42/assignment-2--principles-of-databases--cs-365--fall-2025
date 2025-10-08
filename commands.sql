@@ -1,4 +1,8 @@
 -- Command 1: Add a new entry --
+SET block_encryption_mode = 'aes-256-cbc';
+SET @key_str = UNHEX(SHA2('the dog in the field',512));
+SET @init_vector = RANDOM_BYTES(16);
+
 INSERT INTO sites (url)
 VALUES ('https://snapchat.com');
 
@@ -9,17 +13,15 @@ INSERT INTO passwords_data
 (account_ID, password, time_of_creation, comment, is_current)
 VALUES (
   LAST_INSERT_ID(),
-  AES_ENCRYPT('MyNewSnapPass2025!', UNHEX(SHA2('the dog in the field',512)), RANDOM_BYTES(16)),
+  AES_ENCRYPT('MyNewSnapPass2025!', @key_str, @innit_vector),
   '2025-10-08',
   'Created new account entry for Snapchat site',
   1
 );
+INSERT INTO hex_number (hex_number)
+  VALUES(@innit_vector)
 
 -- Command 2: Get the password associated with a URL --
-SET block_encryption_mode = 'aes-256-cbc';
-SET @key_str = UNHEX(SHA2('the dog in the field',512));
-SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
-
 SELECT s.url, a.email, a.username,
        CONVERT(AES_DECRYPT(p.password, @key_str, @init_vector) USING utf8) AS plaintext_password
 FROM sites s
@@ -54,10 +56,6 @@ WHERE site_ID = 5;
 SELECT * FROM sites;
 
 -- Command 5: Change the password to any entry --
-SET block_encryption_mode = 'aes-256-cbc';
-SET @key_str = UNHEX(SHA2('the dog in the field',512));
-SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
-
 UPDATE passwords_data
 SET 
   password = AES_ENCRYPT('MyNewSecureSnapPass2025!', @key_str, @init_vector),
@@ -82,10 +80,6 @@ JOIN sites s ON a.site_ID = s.site_ID
 WHERE s.url = 'http://steam.com';
 
 -- To Verify --
-SET block_encryption_mode = 'aes-256-cbc';
-SET @key_str = UNHEX(SHA2('the dog in the field',512));
-SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
-
 SELECT 
   s.url,
   a.email,
@@ -101,11 +95,6 @@ JOIN sites s ON a.site_ID = s.site_ID
 ORDER BY p.pass_ID;
 
 -- Command 7: delete tuple based on a password --
-SET block_encryption_mode = 'aes-256-cbc';
-SET @key_str = UNHEX(SHA2('the dog in the field',512));
-SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
-
--- find the account_ID and site_ID tied to that password --
 SELECT a.account_ID, s.site_ID
 INTO @acc_id, @site_id
 FROM passwords_data p

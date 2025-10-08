@@ -4,7 +4,7 @@ USE passwords;
 
 SET block_encryption_mode = 'aes-256-cbc';
 SET @key_str = UNHEX(SHA2('the dog in the field', 512));
-SET @init_vector = x'0123456789ABCDEF0123456789ABCDEF';
+SET @init_vector = RANDOM_BYTES(16); -- Create a secondary table --
 
 CREATE TABLE IF NOT EXISTS sites (
   site_ID     INT UNSIGNED  NOT NULL AUTO_INCREMENT,
@@ -29,10 +29,17 @@ CREATE TABLE IF NOT EXISTS passwords_data (
   password          VARBINARY(256)  NOT NULL,
   time_of_creation  DATE            NOT NULL DEFAULT (CURRENT_DATE),
   comment           VARCHAR(256)    NULL,
-  is_current        TINYINT(1)     NOT NULL,
+  is_current        TINYINT(1)      NOT NULL,
 
   PRIMARY KEY(pass_ID)
 );
+
+CREATE TABLE IF NOT EXISTS hex_vectors(
+  pass_ID     INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  hex_number  VARCHAR(256)  NOT NULL,
+
+  PRIMARY KEY(pass_ID)
+)
 
 INSERT INTO sites VALUES
     (1, "https://mail.google.com"),
@@ -68,3 +75,18 @@ INSERT INTO passwords_data
   (6, AES_ENCRYPT('Dexter8877%', @key_str, @init_vector), '2023-08-20', NULL, 1),
   (7, AES_ENCRYPT('IAmHere@', @key_str, @init_vector), '2022-08-20', NULL, 1),
   (8, AES_ENCRYPT('SchoolAppropriate78@', @key_str, @init_vector), '2020-12-31', NULL, 1);
+
+INSERT INTO hex_vectors
+  (1, @init_vector),
+  (2, @init_vector),
+  (3, @init_vector),
+  (4, @init_vector),
+  (5, @init_vector),
+  (6, @init_vector),
+  (7, @init_vector),
+  (8, @init_vector),
+  (9, @init_vector),
+  (10, @init_vector),
+  (11, @init_vector),
+  (12, @init_vector),
+  (13, @init_vector);
